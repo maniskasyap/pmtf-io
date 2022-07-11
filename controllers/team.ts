@@ -7,10 +7,11 @@ const createNewMember = async (req: Request, res: Response, next: any) => {
   try {
     const member = req.body;
     const userId = uuidv4();
-    const { name, email, avatar } = member;
-    const iQuery = `INSERT INTO team (userid,name,email,avatar) VALUES (${userId}, ${
-      name || null
-    }, ${email || null}, ${avatar || null})`;
+    let { name, email, avatar } = member;
+    name = name ? `'${name}'` : null;
+    email = email ? `'${email}'` : null;
+    avatar = avatar ? `'${avatar}'` : null;
+    const iQuery = `INSERT INTO team (userid,name,email,avatar) VALUES ('${userId}', ${name}, ${email}, ${avatar})`;
     const result = await db.query(iQuery, null);
     const resPayload = createSuccess(
       `User succesfully created with id ${userId}`
