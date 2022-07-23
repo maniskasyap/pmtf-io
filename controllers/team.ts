@@ -7,11 +7,12 @@ const createNewMember = async (req: Request, res: Response, next: any) => {
   try {
     const member = req.body;
     const userId = uuidv4();
-    let { name, email, avatar } = member;
+    let { name, email, avatar, pw } = member;
     name = name ? `'${name}'` : null;
-    email = email ? `'${email}'` : null;
+    // email = email ? `'${email}'` : null;
+    // pw = pw ? `'${pw}'` : null;
     avatar = avatar ? `'${avatar}'` : null;
-    const iQuery = `INSERT INTO team (userid,name,email,avatar) VALUES ('${userId}', ${name}, ${email}, ${avatar})`;
+    const iQuery = `INSERT INTO team (userid,name,email,password,avatar) VALUES ('${userId}', ${name}, '${email}', '${pw}', ${avatar})`;
     const result = await db.query(iQuery, null);
     const resPayload = createSuccess(
       `User succesfully created with id ${userId}`
@@ -48,4 +49,17 @@ const getMemberById = async (req: Request, res: Response, next: any) => {
   }
 };
 
-export { createNewMember, getAllMembers, getMemberById };
+const getMemberByEmail = async (req: Request, res: Response, next: any) => {
+  try {
+    const { userEmail } = req.params;
+    const sQuery = `SELECT * FROM team WHERE email='${userEmail}'`;
+    const result = await db.query(sQuery, null);
+    const resPayload = createSuccess(result);
+    res.send(resPayload);
+  } catch (error) {
+    const resPayload = createFailure(error);
+    res.status(500).send(resPayload);
+  }
+};
+
+export { createNewMember, getAllMembers, getMemberById, getMemberByEmail };

@@ -1,3 +1,8 @@
-import { createNewMember, getAllMembers, getMemberById } from './team';
+import {
+  createNewMember,
+  getAllMembers,
+  getMemberById,
+  getMemberByEmail,
+} from './team';
 
-export { createNewMember, getAllMembers, getMemberById };
+export { createNewMember, getAllMembers, getMemberById, getMemberByEmail };
