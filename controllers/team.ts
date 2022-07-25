@@ -62,4 +62,23 @@ const getMemberByEmail = async (req: Request, res: Response, next: any) => {
   }
 };
 
-export { createNewMember, getAllMembers, getMemberById, getMemberByEmail };
+const updatePassword = async (req: Request, res: Response, next: any) => {
+  try {
+    const { id, pw } = req.body;
+    const sQuery = `UPDATE team SET password='${pw}' WHERE userid='${id}'`;
+    const result = await db.query(sQuery, null);
+    const resPayload = createSuccess(result);
+    res.send(resPayload);
+  } catch (error) {
+    const resPayload = createFailure(error);
+    res.status(500).send(resPayload);
+  }
+};
+
+export {
+  createNewMember,
+  getAllMembers,
+  getMemberById,
+  getMemberByEmail,
+  updatePassword,
+};
